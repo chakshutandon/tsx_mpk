@@ -1,20 +1,16 @@
 #!/bin/bash
 set -x
 
-#Install Quemu
-sudo apt-get install qemu
-
 #Now create a disk for your virtual machine 
-#for 16GB
-qemu-img create $QEMU_IMG_FILE 16g
-qemu-img create $QEMU_SWAP_FILE 3g
+qemu-img create $QEMU_IMG_FILE $QEMU_IMG_SIZE
+qemu-img create $QEMU_SWAP_FILE $QEMU_SWAP_SIZE
 
 #Now format your disk with some file system; 
 #ext4 in this example
-mkfs.ext4 $QEMU_IMG_FILE
+sudo mkfs.ext4 $QEMU_IMG_FILE
 
 #Now create a mount point directory for your image file
-mkdir $MOUNT_DIR
+mkdir -p $MOUNT_DIR
 
 #Next, mount your image to the directory
 sudo mount -o loop $QEMU_IMG_FILE $MOUNT_DIR
@@ -22,12 +18,8 @@ sudo mount -o loop $QEMU_IMG_FILE $MOUNT_DIR
 #Install debootstrap
 sudo apt-get install debootstrap
 
-#Now get the OS release version using
-cat /etc/os-release
-
 #Set family name 
 sudo debootstrap --arch amd64 $OS_RELEASE_NAME  $MOUNT_DIR
-
 
 #Unmount
 sudo umount $MOUNT_DIR

@@ -2,16 +2,24 @@
 set -x
 
 #Pass the release name
+export ROOT=$(dirname $PWD)
+export KERN_SRC=$ROOT/linux
+
+export KERN_VER="4.9.215"
+export OS_RELEASE_NAME="buster"
+
 export BASE=$PWD
-export OS_RELEASE_NAME=$(sed -n 's/^\UBUNTU_CODENAME=//p' < /etc/os-release)
-export QEMU_IMG=$BASE
-export KERN_SRC=$BASE/KERNEL/linux-4.4.212
-export KERNEL=$BASE/KERNEL
-#CPU parallelism
-export PARA=`nproc`
-export VER="4.4.212"
-export QEMU_IMG_FILE=$PWD/qemu-image.img
-export QEMU_SWAP_FILE=$PWD/qemu-swap.img
-export MOUNT_DIR=$PWD/mountdir
-export QEMUMEM="2096M"
+
+export QEMU_IMG_FILE=$BASE/debian-buster.img
+export QEMU_SWAP_FILE=$BASE/qemu-swap.img
+
+export MOUNT_DIR=$BASE/debian
+
+export QEMU_NR_CORES=4
+
+export QEMU_IMG_SIZE="16G"
+export QEMU_SWAP_SIZE="3G"
+
+export QEMU_MEM="2096M"
+
 set +x
