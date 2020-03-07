@@ -1,6 +1,8 @@
 #!/bin/bash
 set -x
 
+sudo umount $MOUNT_DIR
+
 #Launching QEMU
 sudo qemu-system-x86_64                                                         \
     -nographic                                                                  \
