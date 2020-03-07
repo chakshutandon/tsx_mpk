@@ -1,3 +1,3 @@
 #!/bin/bash
 set -x
-sudo umount $BASE/mountdir
+sudo umount $MOUNT_DIR
