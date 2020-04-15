@@ -9,6 +9,7 @@ int main() {
     
     // attempt to access without proper lock semantics
     pkey_set(sms->pkey, 0);
+    printf("Writing to shared memory...\n");
     memcpy(sms->start, &data, len);
 
     int *res = (int *)__tsx_mpk__read(sms->start, len);
