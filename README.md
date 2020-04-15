@@ -2,12 +2,21 @@ Here we are trying to solve a problem of semantic bugs in large programs while u
 
 This is using Intel's MPK
 
+How to use project:
+
+1. Build ``lib_tsx_mpk.so`` (see lib/README.md)
+2. Build example files in ./src (see src/README.md)
+
 To build LLVM:
+
+```
 git submodule init
 git submodule update
-1. cd llvm
-2. mkdir build
-3. cd build
-4. cmake -G"Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang" -DLLVM_TARGETS_TO_BUILD=X86 ../llvm/
-5. make -j 40
-6. sudo make install
+
+cd llvm
+mkdir build
+cd build
+cmake -G"Unix Makefiles" -DLLVM_ENABLE_PROJECTS="clang" -DLLVM_TARGETS_TO_BUILD=X86 ../llvm/
+make -j 40
+sudo make install
+```
