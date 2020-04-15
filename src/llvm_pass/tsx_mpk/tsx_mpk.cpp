@@ -3,6 +3,7 @@
 
 #include "llvm/Pass.h"
 #include "llvm/IR/Function.h"
+#include "llvm/IR/Instructions.h"
 #include "llvm/IR/InstIterator.h"
 #include "llvm/Support/raw_ostream.h"
 
@@ -16,13 +17,23 @@ namespace {
         const std::string LIB_UNSAFE_PREFIX = "__tsx_mpk_unsafe__.*";
 
         bool runOnFunction(Function &F) override {
+            std::vector<Instruction*> set_delete;
             if (!std::regex_match(
                     F.getName().str(), 
                     std::regex(LIB_UNSAFE_PREFIX)
                 )) {
-                for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I) {}
+                for (inst_iterator I = inst_begin(F), E = inst_end(F); I != E; ++I) {
+                    if (!isa<CallInst>(*I)) continue;
+                    Function *callee = cast<CallInst>(*I).getCalledFunction();
+                    if (callee->getName() != "pkey_set") continue;
+                    if (!I->use_empty()) I->replaceAllUsesWith(UndefValue::get(I->getType()));
+                    set_delete.push_back(&*I);
+                }
+                for (auto i = set_delete.begin(); i != set_delete.end(); ++i) {
+                    (*i)->eraseFromParent();
+                }               
             }
-            return false;
+            return true;
         }
     };
 }
