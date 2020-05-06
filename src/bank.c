@@ -77,18 +77,23 @@ void *thread_2(void *args) {
 
 int main() {
     size_t len = 4096;
+    // allocate shared memory to hold account balance
     void *mem = allocate_shared_memory(len);
 
+    // initialize account balance
     int initial_balance = 100;
     do_critical_section(mem, &set_balance, &initial_balance);
 
+    // create two threads which withdraw from the account
     pthread_t thread_id[2];
     pthread_create(&thread_id[0], NULL, thread_1, mem);
     pthread_create(&thread_id[1], NULL, thread_2, mem);
 
+    // wait for threads to finish
     pthread_join(thread_id[0], NULL);
     pthread_join(thread_id[1], NULL);
 
+    // get final balance
     int final_balance;
     do_critical_section(mem, &get_balance, &final_balance);
 
