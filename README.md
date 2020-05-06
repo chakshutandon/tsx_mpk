@@ -4,8 +4,11 @@ This is using Intel's MPK
 
 How to use project:
 
-1. Build ``lib_tsx_mpk.so`` (see lib/README.md)
-2. Build example files in ./src (see src/README.md)
+```
+git clone https://gitlab.com/shaleen/tsx-mpk.git
+cd tsx_mpk
+make
+```
 
 To build LLVM:
 
