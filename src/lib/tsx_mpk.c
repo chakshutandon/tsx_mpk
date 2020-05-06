@@ -64,3 +64,15 @@ int __tsx_mpk_unsafe__write(void *start, size_t len, void *data) {
     pthread_mutex_unlock(mutex_lock);
     return 0;
 }
+
+void __tsx_mpk_unsafe__do_critical_section(void *start, size_t len, void (*f)(void *, void *), void *data) {
+    struct __tsx_mpk__shared_memory_struct *sms = __tsx_mpk__get_shared_memory_struct(start, len);
+    pthread_mutex_t *mutex_lock = &(sms->mutex_lock);
+    int pkey = sms->pkey;
+
+    pthread_mutex_lock(mutex_lock);
+    pkey_set(pkey, PKEY_ENABLE_WRITE);
+    (*f)(sms->start, data);
+    pkey_set(pkey, PKEY_DISABLE_WRITE);
+    pthread_mutex_unlock(mutex_lock);
+}
