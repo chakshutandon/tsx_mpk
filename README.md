@@ -1,11 +1,16 @@
-Here we are trying to solve a problem of semantic bugs in large programs while using locks on shared data structures
+# tsx_mpk
 
-This is using Intel's MPK
+This project introduces compile-time static analysis and a minimal runtime library
+to enforce transactional semantics in large-scale systems.
 
-How to use project:
+Using Intel MPK (https://lwn.net/Articles/643797/), we are able to ensure there are
+no data races due to shared memory structures. We warn users on potential data race
+conditions and remove offending instructions from release binaries.
+
+For more details, see the full paper (https://chakshutandon.com/research/tsx_mpk.pdf).
 
 ```
-git clone https://gitlab.com/shaleen/tsx-mpk.git
+git clone https://gitlab.com/chakshutandon/tsx_mpk
 cd tsx_mpk
 make
 ```
